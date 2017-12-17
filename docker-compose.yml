@@ -1,0 +1,29 @@
+version: '2.2'
+
+services:
+
+  logstash-ingest:
+    image: docker.elastic.co/logstash/logstash:6.0.0
+    volumes:
+      - ./logstash-ingest/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash-ingest/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5044:5044"
+    networks:
+      - elk
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:6.0.0
+    volumes:
+      - filebeat-data:/usr/share/filebeat/data
+      - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./filebeat/logs-pickup:/var/logs-pickup
+    networks:
+      - elk
+
+networks:
+  elk:
+    driver: bridge
+
+volumes:
+  filebeat-data:

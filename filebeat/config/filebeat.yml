@@ -1,0 +1,10 @@
+filebeat.prospectors:
+- type: log
+  fields_under_root: true
+  json.keys_under_root: true
+  json.add_error_key: true
+  paths:
+    - /var/logs-pickup/*.log
+
+output.logstash:
+  hosts: ["logstash-ingest:5044"]
