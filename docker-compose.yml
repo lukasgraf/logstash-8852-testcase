@@ -3,7 +3,7 @@ version: '2.2'
 services:
 
   logstash-ingest:
-    image: docker.elastic.co/logstash/logstash:6.0.0
+    image: docker.elastic.co/logstash/logstash:6.1.0
     volumes:
       - ./logstash-ingest/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash-ingest/pipeline:/usr/share/logstash/pipeline
@@ -13,7 +13,7 @@ services:
       - elk
 
   filebeat:
-    image: docker.elastic.co/beats/filebeat:6.0.0
+    image: docker.elastic.co/beats/filebeat:6.1.0
     volumes:
       - filebeat-data:/usr/share/filebeat/data
       - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml

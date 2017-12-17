@@ -37,3 +37,27 @@ logstash-ingest_1  |         [0] "beats_input_raw_event"
 logstash-ingest_1  |     ]
 logstash-ingest_1  | }
 ```
+
+
+### Actual behavior
+
+On logstash-6.1.0 this leads to:
+
+```
+filebeat_1         | 2017/12/17 22:21:09.785211 output.go:92: ERR Failed to publish events: client is not connected
+logstash-ingest_1  | [2017-12-17T22:21:09,794][INFO ][org.logstash.beats.BeatsHandler] [local: 192.168.0.2:5044, remote: 192.168.0.3:47964] Exception: -1
+filebeat_1         | 2017/12/17 22:21:09.795726 async.go:235: ERR Failed to publish events caused by: read tcp 192.168.0.3:47964->192.168.0.2:5044: read: connection reset by peer
+filebeat_1         | 2017/12/17 22:21:09.796199 async.go:235: ERR Failed to publish events caused by: client is not connected
+
+filebeat_1         | 2017/12/17 22:21:10.796564 output.go:92: ERR Failed to publish events: client is not connected
+logstash-ingest_1  | [2017-12-17T22:21:10,808][INFO ][org.logstash.beats.BeatsHandler] [local: 192.168.0.2:5044, remote: 192.168.0.3:47966] Exception: -1
+filebeat_1         | 2017/12/17 22:21:10.809409 async.go:235: ERR Failed to publish events caused by: read tcp 192.168.0.3:47966->192.168.0.2:5044: read: connection reset by peer
+filebeat_1         | 2017/12/17 22:21:10.810772 async.go:235: ERR Failed to publish events caused by: client is not connected
+
+filebeat_1         | 2017/12/17 22:21:11.812427 output.go:92: ERR Failed to publish events: client is not connected
+logstash-ingest_1  | [2017-12-17T22:21:11,818][INFO ][org.logstash.beats.BeatsHandler] [local: 192.168.0.2:5044, remote: 192.168.0.3:47968] Exception: -1
+filebeat_1         | 2017/12/17 22:21:11.819983 async.go:235: ERR Failed to publish events caused by: read tcp 192.168.0.3:47968->192.168.0.2:5044: read: connection reset by peer
+filebeat_1         | 2017/12/17 22:21:11.821797 async.go:235: ERR Failed to publish events caused by: client is not connected
+
+... (repeating indefinitely)
+```
